@@ -1,0 +1,22 @@
+Author: Wyatt Wolf
+
+Project written in python version 2.7.5
+
+P0 takes in a list of words then addes them to a ternary search tree.
+The tree is then traversed with output being placed in a file according to traversal order.
+
+words are string made of the folling characters:
+a-z
+A-Z
+0-9
+_       (underscore)
+-       (dash)
+
+
+How to run program
+option 1 (input entered by user):
+        python main.py
+
+option 2 (using file input): python main.py filename
+
+option 3 (redirect): python main.py < filename
