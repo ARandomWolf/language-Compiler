@@ -61,7 +61,7 @@ class Node:
             out_file.close()
 
         out_file = open('output.inorder', 'a')
-        out_file.write(' '*depth*3 + root.val + '\n')
+        out_file.write(' ' * depth * 3 + root.val + '\n')
         out_file.close()
 
         if print_label:
@@ -110,9 +110,8 @@ class Node:
             out_file.close()
 
         out_file = open('output.postorder', 'a')
-        out_file.write(' '*depth*3 + root.val + '\n')
+        out_file.write(' ' * depth * 3 + root.val + '\n')
         out_file.close()
-
 
     def preorder(self, root, depth):
         if root is None or root.val is None:
@@ -126,7 +125,7 @@ class Node:
             out_file.close()
 
         out_file = open('output.preorder', 'a')
-        out_file.write(' '*depth*3 + root.val +'\n')
+        out_file.write(' ' * depth * 3 + root.val + '\n')
         out_file.close()
 
         if print_label:
@@ -149,5 +148,3 @@ class Node:
             out_file.close()
 
         self.preorder(root.hi, depth + 1)
-
-

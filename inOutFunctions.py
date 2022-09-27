@@ -15,18 +15,26 @@ def get_args_input():
     if len(sys.argv) == 1:
         print("Use CTRL-D to submit typed text.")
         for line in sys.stdin:
-            lines.append(line.strip())
+            tmp = line.strip()
+            tmp += ' '
+            lines.append(tmp)
+
+        sys.stdin.close()
 
     elif len(sys.argv) == 2:
         text_file = open(sys.argv[1], "r")
         for line in text_file:
-            lines.append(line.strip())
+            tmp = line.strip()
+            tmp += ' '
+            lines.append(tmp)
+        text_file.close()
 
     else:
         print("Error! Unexpected number of arguments provided at run-time")
         exit(1)
 
     return lines
+
 
 # removes comments from a list of strings
 # comments are started and ended with '#' characters.

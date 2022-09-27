@@ -6,10 +6,10 @@
 if __name__ == '__main__':
     from TreeWrapper import Trie
     from inOutFunctions import *
-
+    from Tokens import *
     # get input into list of lines
     lines = comment_free_input()
+    scan_array(lines)
 
-    print(lines)
 
 
