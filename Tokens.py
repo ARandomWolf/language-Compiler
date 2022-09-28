@@ -4,23 +4,29 @@
 import re
 from collections import namedtuple
 
-#                  0            1       2        3         4          5            6        7
-tokenID_map = {'IDENT_tk', 'NUM_tk', 'KW_tk', 'OP_tk', 'EOF_tk', 'DELM_tk', 'EQEQ_tk', 'DTDTEQ_tk'}
-token_names = {'Identifier', 'Number', 'Keyword', 'Operator', 'End of file', 'Delimiter', 'Equality Assessment', 'Coline Equal'}
+#                  0            1       2        3         4          5            6        7           8           9
+tokenID_map = {'IDENT_tk', 'NUM_tk', 'KW_tk', 'OP_tk', 'EOF_tk', 'DELM_tk', 'EQEQ_tk', 'DTDTEQ_tk', 'NOTEQ_tk' , 'BARBAR_tk'}
+token_names = {'Identifier', 'Number', 'Keyword', 'Operator', 'End of file', 'Delimiter', 'Equality Assessment', 'Coline Equal', 'Not Equal', 'or operator'}
 
 Token = namedtuple('Token', ['tokenID', 'tk_string', 'line_num', 'character_num'])
 
-char_col_map = {'digit': 0, 'letter': 1, ' ': 2, '=': 3, ':': 4}
+char_col_map = {'digit': 0, 'letter': 1, ' ': 2, '=': 3, ':': 4, '!': 5, '|': 6}
 
-fsa_table = [[1, 2, 0, 3],  # 0
-             [1, 1001, 1001, 1001],  # 1
-             [2, 2, 1000, 1000],  # 2
-             [1003, 1003, 1003, 4],
-             [1006, 1006, 1006, -1]
+fsa_table = [[1   ,    2,    0,    3,    5,    7,    9],    # 0
+             [1   , 1001, 1001, 1001, 1001, 1001, 1001],    # 1
+             [2   ,    2, 1000, 1000, 1000, 1000, 1000],    # 2
+             [1003, 1003, 1003, 4   , 1003, 1003, 1003],    # 3
+             [1006, 1006, 1006, 1006, 1006, 1006, 1006],    # 4
+             [1003, 1003, 1003,    6, 1003, 1003, 1003],    # 5
+             [1007, 1007, 1007, 1007, 1007, 1007, 1007],    # 6
+             [  -8,   -8,   -8,    8,   -8,   -8,   -8],    # 7
+             [1008, 1008, 1008, 1008, 1008, 1008, 1008],    # 8
+             [  -9,   -9,   -9,   -9,   -9,   -9,   10],    # 9
+             [1009, 1009, 1009, 1009, 1009, 1009, 1009],    # 10
              ]
 
 
-def scan_array(lines):
+def scan_for_tokens(lines):
     new_token = ''
     current_state = 0
     token_list = []
@@ -31,15 +37,17 @@ def scan_array(lines):
             current_state = get_new_state(current_state, lines[ln][cn])
 
             if current_state < 0:
-                print('error unexpected character on line '+str(ln)+' character '+str(cn))
-            elif current_state == 0:
-                continue
+                print('Error number: ' +str(current_state))
+                print('Unexpected character on line '+str(ln)+' character '+str(cn))
+                exit(1)
+
             elif current_state > 999:
-                print('final token ' + new_token + ' code ' + str(current_state))
+                print('final_token: ' + new_token + '    code ' + str(current_state))
                 token_list.append(new_token)
-                new_token = ''
+                new_token = lines[ln][cn]
                 current_state = 0
-            else:
+                current_state = get_new_state(current_state, lines[ln][cn])
+            elif current_state != 0:
                 new_token += lines[ln][cn]
 
 
