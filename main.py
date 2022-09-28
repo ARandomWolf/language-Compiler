@@ -5,10 +5,12 @@
 
 if __name__ == '__main__':
 
-    from inOutFunctions import *
+    from Input import *
     from Tokens import *
     # get input into list of lines
     lines = comment_free_input()
+
+    # scan lines for tokens
     scan_for_tokens(lines)
 
 

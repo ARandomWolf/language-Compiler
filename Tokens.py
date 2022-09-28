@@ -4,6 +4,7 @@
 import re
 from collections import namedtuple
 
+# Base token types (keywords and single operators are given unique token names after scanning)
 #                  0            1       2        3         4          5            6        7           8
 tokenID_map = {'IDENT_tk', 'NUM_tk', 'KW_tk', 'OP_tk', 'EOF_tk', 'DELM_tk', 'EQEQ_tk', 'DTDTEQ_tk', 'NOTEQ_tk' ,
                'BARBAR_tk', 'AMPAMP_tk'}
@@ -14,8 +15,13 @@ token_names = {'Identifier', 'Number', 'Keyword', 'Operator', 'End of file', 'De
 
 Token = namedtuple('Token', ['tokenID', 'tk_string', 'line_num', 'character_num'])
 
-char_col_map = {'digit': 0, 'letter': 1, ' ': 2, '=': 3, ':': 4, '!': 5, '|': 6, '&': 7}
+# maps characters to their corrosponding column
+char_col_map = {' ': 2, '=': 3, ':': 4, '!': 5, '|': 6, '&': 7}
+# column 8 in state table contains all chars stored here
+single_char_tokens_column = ['<', '>', '+', '-', '*', '/', '^', '.', '(', ')', ',', '{', '}', ';', '[', ']']
+#single_char_tokens = ['<', '>', '+', '-', '*', '/', '^', '.', '(', ')', ',', '{', '}', ';', '[', ']', '=', ':']
 
+# state table for identifying tokens
 fsa_table = [[1   ,    2,    0,    3,    5,    7,    9,   11],    # 0
              [1   , 1001, 1001, 1001, 1001, 1001, 1001, 1001],    # 1
              [2   ,    2, 1000, 1000, 1000, 1000, 1000, 1000],    # 2
@@ -39,11 +45,14 @@ def scan_for_tokens(lines):
 
     for ln in range(len(lines)):
         for cn in range(len(lines[ln])):
-            print ('current state: ', current_state)
+            # print ('current state: ', current_state)
             current_state = get_new_state(current_state, lines[ln][cn])
 
+            if new_token == ' ':
+                new_token = ''
+
             if current_state < 0:
-                print('Error number: ' +str(current_state))
+                print('Error number: ' + str(current_state))
                 print('Unexpected character on line '+str(ln)+' character '+str(cn))
                 exit(1)
 
@@ -53,6 +62,7 @@ def scan_for_tokens(lines):
                 new_token = lines[ln][cn]
                 current_state = 0
                 current_state = get_new_state(current_state, lines[ln][cn])
+
             elif current_state != 0:
                 new_token += lines[ln][cn]
 
@@ -61,10 +71,15 @@ def scan_for_tokens(lines):
 def char_to_col(character):
     if re.match("^[0-9]", character):
         return 0
+
     elif re.match("^[A-Za-z]", character):
         return 1
+
     elif character in char_col_map:
         return char_col_map.get(character)
+
+    elif single_char_tokens.__contains__(character):
+        return 8
 
     return 5000
 
