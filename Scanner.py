@@ -49,32 +49,6 @@ def remove_comments(lines):
     return lines
 
 
-def add_unique_token_ids(token_list):
-
-    for tk_num in range(len(token_list)):
-
-        # change from general tokenID to specific ID
-        # single_char_tokens variable (map type) holds single character token to tokenID map
-        if token_list[tk_num].tokenID == 'OP_tk':
-            tmp = Token(single_char_tokens.get(token_list[tk_num].tk_string), token_list[tk_num].tk_string,
-                        token_list[tk_num].line_num, token_list[tk_num].character_num)
-            token_list[tk_num] = tmp
-
-        # Identify keyword tokens and give them specific ID.
-        # keyword_names variable (map type) holds keyword to tokenID map.
-        elif token_list[tk_num].tokenID == 'IDENT_tk' and token_list[tk_num].tk_string in keyword_names:
-            tmp = Token(keyword_names.get(token_list[tk_num].tk_string), token_list[tk_num].tk_string,
-                        token_list[tk_num].line_num, token_list[tk_num].character_num)
-            token_list[tk_num] = tmp
-
-    return token_list
-
-
-def print_token_list(token_list):
-    for tk in token_list:
-        print(tk)
-
-
 def scan_for_tokens(lines):
     new_token = ''
     current_state = 0
@@ -114,6 +88,32 @@ def scan_for_tokens(lines):
                 new_token += lines[ln][cn]
 
     return add_unique_token_ids(token_list)
+
+
+def add_unique_token_ids(token_list):
+
+    for tk_num in range(len(token_list)):
+
+        # change from general tokenID to specific ID
+        # single_char_tokens variable (map type) holds single character token to tokenID map
+        if token_list[tk_num].tokenID == 'OP_tk':
+            tmp = Token(single_char_tokens.get(token_list[tk_num].tk_string), token_list[tk_num].tk_string,
+                        token_list[tk_num].line_num, token_list[tk_num].character_num)
+            token_list[tk_num] = tmp
+
+        # Identify keyword tokens and give them specific ID.
+        # keyword_names variable (map type) holds keyword to tokenID map.
+        elif token_list[tk_num].tokenID == 'IDENT_tk' and token_list[tk_num].tk_string in keyword_names:
+            tmp = Token(keyword_names.get(token_list[tk_num].tk_string), token_list[tk_num].tk_string,
+                        token_list[tk_num].line_num, token_list[tk_num].character_num)
+            token_list[tk_num] = tmp
+
+    return token_list
+
+
+def print_token_list(token_list):
+    for tk in token_list:
+        print(tk)
 
 
 # driver for char_col_map
