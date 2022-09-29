@@ -59,16 +59,19 @@ def scan_for_tokens(lines):
             # print ('current state: ', current_state)
             current_state = get_new_state(current_state, lines[ln][cn])
 
-            # sometimes we pick up a leading white space so this removes it
+            # sometimes we pick up a leading white space, this removes it
             if new_token == ' ':
                 new_token = ''
 
-            # errors specific to character sequences. ex: '!=' vs '=!'
-            #  or characters not in language
+            # catch errors & print relevant error message
             if current_state < 0:
+
+                # character not in language
                 if current_state < -99:
                     print('Error! line ' + str(ln + 1) + ' character ' + str(cn))
                     print(error_messages.__getitem__(current_state) + ' ' + lines[ln][cn])
+
+                # unrecognized sequence of characters. ex: '!=' vs '=!'
                 else:
                     print('Error! line ' + str(ln + 1) + ' character ' + str(cn))
                     print('Message: ' + error_messages.__getitem__(current_state) + lines[ln][cn - 1])
@@ -118,7 +121,7 @@ def print_token_list(token_list):
 
 # driver for char_col_map
 # provides FSA table column for given characters
-# or passes along error (over 5000)
+# or passes along error ( less than 0 )
 def char_to_col(character):
     if re.match("^[0-9]", character):
         return 0
