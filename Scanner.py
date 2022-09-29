@@ -3,13 +3,13 @@
 import re
 
 
-# enumerated imports to debug dependency issues
+# enumerated imports for readability
 from Tokens import Token
 from Tokens import single_char_tokens
 from Tokens import keyword_names
 from Tokens import error_messages
 from Tokens import char_col_map
-from Tokens import tokenID_map
+from Tokens import basic_tokenID
 from Tokens import single_char_tokens_column
 from Tokens import fsa_table
 
@@ -81,7 +81,7 @@ def scan_for_tokens(lines):
             # final or base token identified
             elif current_state > 999:
                 #  TODO add token truple to list not just token string
-                token_list.append(Token(tokenID_map[current_state - 1000], new_token, ln + 1, cn ))
+                token_list.append(Token(basic_tokenID[current_state - 1000], new_token, ln + 1, cn))
                 new_token = lines[ln][cn]
                 current_state = 0
                 current_state = get_new_state(current_state, lines[ln][cn])
@@ -105,7 +105,7 @@ def add_unique_token_ids(token_list):
             token_list[tk_num] = tmp
 
         # Identify keyword tokens and give them specific ID.
-        # keyword_names variable (map type) holds keyword to tokenID map.
+        # keyword_names variable (map type) takes language keyword -> tokenID.
         elif token_list[tk_num].tokenID == 'IDENT_tk' and token_list[tk_num].tk_string in keyword_names:
             tmp = Token(keyword_names.get(token_list[tk_num].tk_string), token_list[tk_num].tk_string,
                         token_list[tk_num].line_num, token_list[tk_num].character_num)
