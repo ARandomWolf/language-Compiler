@@ -1,11 +1,10 @@
 Author: Wyatt Wolf
-Github Link: https://github.com/ARandomWolf/language-Compiler.git
+Github: https://github.com/ARandomWolf/language-Compiler.git
 Project written in python version 2.7.5
+
 
 The scanner portion of this project takes in file or console input,
 then outputs a list of tokens one at a time, giving details on each one.
-
-
 
 ----------------------------------------------------------------------------------------
 How to run program
@@ -13,7 +12,7 @@ option 1 (input entered by user):
         python main.py
 
         Note: CTRL-D or CTRL-Z (EOF) must be entered on new line.
-        All text present on the same line as the EOF token will be lost.
+        All text present on the same line as the EOF token will be lost and cause errors.
 
 option 2 (using file input): python main.py filename
 
