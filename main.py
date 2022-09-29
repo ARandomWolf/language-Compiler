@@ -11,7 +11,7 @@ if __name__ == '__main__':
     # get input into list of lines
     input_text = get_args_input()
 
-    # remove comments
+    # remove comments (replaces with white space to preserve file structure)
     input_text = remove_comments(input_text)
 
     # scan lines for tokens
