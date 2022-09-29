@@ -2,7 +2,6 @@
 # Wyatt Wolf
 # CS4280
 import sys
-import re
 
 
 # get command line arguments, or get input from user if no arguments are specified.
@@ -20,6 +19,7 @@ def get_args_input():
             tmp += ' '
             lines.append(tmp)
         sys.stdin.close()
+
     # file or redirect
     elif len(sys.argv) == 2:
         text_file = open(sys.argv[1], "r")
@@ -35,45 +35,6 @@ def get_args_input():
 
     lines.append(' ')
     return lines
-
-
-# removes comments from a list of strings
-# comments are started and ended with '#' characters.
-# in the space where a comment was, space is added back to retain line and character information.
-def remove_comments(lines):
-    is_comment = False
-
-    # iterate over list of strings that represent each line of input
-    for line_number in range(len(lines)):
-        new_string = ''
-
-        # iterate over each character in the line and remove comments
-        for char_number in range(len(lines[line_number])):
-
-            # start of comment in program
-            if lines[line_number][char_number] == '#' and is_comment is False:
-                is_comment = True
-                new_string += ' '
-
-            # end of comment in program
-            elif lines[line_number][char_number] == '#' and is_comment:
-                is_comment = False
-                new_string += ' '
-
-            elif is_comment:
-                new_string += ' '
-
-            else:
-                new_string += lines[line_number][char_number]
-
-        # replace the existing string with the new one (strings are unmutable in python)
-        lines[line_number] = new_string
-
-    return lines
-
-
-def comment_free_input():
-    return remove_comments(get_args_input())
 
 
 def clear_output_files():

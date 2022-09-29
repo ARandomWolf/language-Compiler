@@ -6,13 +6,16 @@
 if __name__ == '__main__':
 
     from Input import *
-    from Tokens import *
+    from Scanner import *
     
     # get input into list of lines
-    lines = comment_free_input()
+    input_text = get_args_input()
+
+    # remove comments
+    input_text = remove_comments(input_text)
 
     # scan lines for tokens
-    scan_for_tokens(lines)
+    token_list = scan_for_tokens(input_text)
 
-
-
+    # display
+    print_token_list(token_list)

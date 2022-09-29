@@ -2,11 +2,10 @@ Author: Wyatt Wolf
 
 Project written in python version 2.7.5
 
-The scanner portion of this project takes file or console input.
-Important: typed console input (not redirect) requires the EOF to be on a new line.
-This is because all data in the line buffer is cleared on receipt of EOF.
+The scanner portion of this project takes in file or console input,
+then outputs a list of tokens one at a time, giving details on each one.
 
-This program outputs a list of tokens one at a time, giving details on each one.
+
 
 ----------------------------------------------------------------------------------------
 How to run program
