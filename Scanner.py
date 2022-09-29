@@ -90,7 +90,9 @@ def scan_for_tokens(lines):
             elif current_state != 0:
                 new_token += lines[ln][cn]
 
-    token_list.append(Token(basic_tokenID[4], 'EOF', len(lines), 1))
+    if token_list[len(token_list)-1].tk_string != 'EOF':
+        token_list.append(Token(basic_tokenID[4], 'EOF', len(lines), 1))
+
     return add_unique_token_ids(token_list)
 
 
