@@ -2,7 +2,6 @@
 # Wyatt Wolf
 import re
 
-
 # enumerated imports for readability
 from Tokens import Token
 from Tokens import single_char_tokens
@@ -90,14 +89,12 @@ def scan_for_tokens(lines):
             elif current_state != 0:
                 new_token += lines[ln][cn]
 
-    if token_list[len(token_list)-1].tk_string != 'EOF':
-        token_list.append(Token(basic_tokenID[4], 'EOF', len(lines), 1))
+    token_list.append(Token(basic_tokenID[4], 'EOF', len(lines), 1))
 
     return add_unique_token_ids(token_list)
 
 
 def add_unique_token_ids(token_list):
-
     for tk_num in range(len(token_list)):
 
         # change from general tokenID to specific ID

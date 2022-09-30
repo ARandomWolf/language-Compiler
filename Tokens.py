@@ -16,7 +16,7 @@ basic_tokenID = ['IDENT_tk', 'NUM_tk', 'KW_tk', 'OP_tk', 'EOF_tk', 'DELM_tk', 'E
 keyword_names = {'begin': 'begin_tk', 'end': 'end_tk', 'do': 'do_tk', 'while': 'while_tk', 'whole': 'whole_tk',
                  'label': 'label_tk', 'return': 'return_tk', 'input': 'input_tk', 'output': 'output_tk',
                  'program': 'program_tk', 'warp': 'warp_tk', 'if': 'if_tk', 'then': 'then_tk', 'pick': 'pick_tk',
-                 'declare': 'declare_tk', 'assign': 'assign_tk', 'func': 'func_tk', 'EOF': 'EOF_tk'}
+                 'declare': 'declare_tk', 'assign': 'assign_tk', 'func': 'func_tk'}
 
 # maps characters to their corresponding column
 char_col_map = {' ': 2, '=': 3, ':': 4, '!': 5, '|': 6, '&': 7}
