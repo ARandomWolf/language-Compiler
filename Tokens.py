@@ -18,7 +18,7 @@ keyword_names = {'begin': 'begin_tk', 'end': 'end_tk', 'do': 'do_tk', 'while': '
                  'program': 'program_tk', 'warp': 'warp_tk', 'if': 'if_tk', 'then': 'then_tk', 'pick': 'pick_tk',
                  'declare': 'declare_tk', 'assign': 'assign_tk', 'func': 'func_tk'}
 
-# maps characters to their corresponding column
+# maps characters to their corresponding column (column 8 is handled in driver function)
 char_col_map = {' ': 2, '=': 3, ':': 4, '!': 5, '|': 6, '&': 7, '_': 9}
 
 # column 8 in fsa_table contains all characters stored here
@@ -35,9 +35,9 @@ error_messages = {-8: '\'=\' expected after ', -9: '\'|\' expected after ',
                   -10: '\'&\' expected after ', -100: 'Unexpected Character: '}
 
 # state table for identifying tokens
-#               0    1     2     3     4     5     6      7     8    9
+# column index   0    1     2     3     4     5     6      7     8    9
 #              dig lett   ws     =     :     !     |      &   rest   _
-fsa_table = [[   1,    2,    0,    3,    5,    7,    9,   11,   13,    2],  # 0
+fsa_table = [[   1,    2,    0,    3,    5,    7,    9,   11,   13,    2],  # 0     row index
              [   1, 1001, 1001, 1001, 1001, 1001, 1001, 1001, 1001, 1001],  # 1
              [   2,    2, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],  # 2
              [1003, 1003, 1003,    4, 1003, 1003, 1003, 1003, 1003, 1003],  # 3

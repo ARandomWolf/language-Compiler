@@ -124,6 +124,7 @@ def print_token_list(token_list):
 # provides FSA table column for given characters
 # or passes along error ( less than 0 )
 def char_to_col(character):
+
     if re.match("^[0-9]", character):
         return 0
 
@@ -134,6 +135,7 @@ def char_to_col(character):
         return char_col_map.get(character)
 
     elif single_char_tokens_column.__contains__(character):
+        # return column 8 for all single character tokens
         return 8
 
     # large int for capturing unrecognised character error
@@ -147,7 +149,7 @@ def get_new_state(state, character):
     col = char_to_col(character)
 
     if col < 0:
-        return -100
+        return col
     else:
         new_state = fsa_table[state][col]
         return new_state
