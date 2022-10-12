@@ -5,7 +5,7 @@
 
 if __name__ == '__main__':
 
-    from Input import *
+    from Input import get_args_input
     from Scanner import *
     
     # get input into list of lines
