@@ -7,7 +7,8 @@ if __name__ == '__main__':
 
     from Input import get_args_input
     from Scanner import *
-    
+    from Parser import *
+
     # get input into list of lines
     input_text = get_args_input()
 
@@ -19,3 +20,7 @@ if __name__ == '__main__':
 
     # display
     print_token_list(token_list)
+
+    parser = Parser(token_list)
+
+    parser.parse_token_list()
