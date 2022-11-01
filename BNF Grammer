@@ -1,0 +1,26 @@
+<program> -> <vars> program <block>
+<block> -> begin <vars> <stats> end
+<vars> -> empty | whole Identifier := Integer ; <vars>
+
+<expr> -> <N> <expr_prime>
+<expr_prime>-> -<expr> | EMPTY
+
+<N>-> <A><N’>
+<N’>-> +<N> | *<N> | EMPTY
+
+<A>-> <M><A’>
+<A’>-> /<A> | EMPTY
+<M> -> : <M> | <R>
+<R> -> ( <expr> ) | Identifier | Integer
+<stats> -> <stat> <mStat>
+<mStat> -> empty | <stat> <mStat>
+<stat> -> <in> ; | <out> ; | <block> | <if> ; | <loop> ; | <assign> ; | <goto> ; | <label> ;
+<in> -> input Identifier
+<out> -> output <expr>
+<if> -> if [ <expr> <RO> <expr> ] then <stat><ifprime>
+<if_prime>-> pick <stat> | EMPTY
+<loop> -> while [ <expr> <RO> <expr> ] <stat>
+<assign> -> assign Identifier = <expr>
+<RO> -> > | < | == | [ = ] (three tokens) | !=
+<label> -> label Identifier
+<goto> -> warp Identifier
