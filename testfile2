@@ -1,16 +1,10 @@
-# p2g4 #
-whole cat := 12;
+# p2g3 #
+whole cat := 99;
+whole frog := 23;
 program
 begin
-    whole ZZ := 9 ;
-    whole yx := 5 ;
-    # p2g4 #
-    while [ yx - 5 < 10 ]
-    begin
-        assign yx = yx + 1 ;
-        input yx;
-     end ;
-
-   output (yx+4) ;
-   label xx;
+#wyatt wolf#
+   whole yx := 5 ;
+   assign yx = yx * 5 - 3 + 8 / : 11 ;
+   output yx ;
 end

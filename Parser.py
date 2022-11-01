@@ -37,10 +37,10 @@ class Parser:
             self.print_error()
             exit(1)
 
-    # *************************************************************************
-    # Below is where BNF of language is implemented
+    # *******************************************************************************************
+    # Below BNF of language is implemented, where each non-terminal has its own function.
     # Comment before each method specifies the production rule it checks
-    # *************************************************************************
+    # *******************************************************************************************
 
     # <program> -> <vars> program <block>
     def program(self):
