@@ -1,10 +1,15 @@
 # p2g4 #
+whole cat := 12;
 program
 begin
-   while [ yx < 10 ]
-   begin
-      assign yx = yx + 1 ;
-   end ;
+    whole ZZ := 9 ;
+    whole yx := 5 ;
+    while [ yx - 5 < 10 ]
+    begin
+        assign yx = yx + 1 ;
+        input yx;
+     end ;
 
-   output yx ;
+   output (yx+4) ;
+   label xx;
 end

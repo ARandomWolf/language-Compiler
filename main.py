@@ -24,3 +24,5 @@ if __name__ == '__main__':
     parser = Parser(token_list)
 
     parser.parse_token_list()
+
+    parser.print_preorder()
