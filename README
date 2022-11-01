@@ -2,12 +2,19 @@ Author: Wyatt Wolf
 Github: https://github.com/ARandomWolf/language-Compiler.git
 Project written in python version 2.7.5
 
-
+Parts:
+1) scanner (FSA table)
 The scanner portion of this project takes in file or console input,
 then outputs a list of tokens one at a time, giving details on each one.
 
+2) parser
+The parser takes in tokens one at a time and insures they match the language grammar.
+If the token is a subset of the grammar it is added to the parse tree.
+All errors should stop the parsing process and report an error.
+
 ----------------------------------------------------------------------------------------
 How to run program
+
 option 1 (input entered by user):
         python main.py
 
@@ -18,6 +25,8 @@ option 2 (using file input): python main.py filename
 
 option 3 (redirect): python main.py < filename
 
+errors: insure python 2.7.5 or compatible version is installed.
+        Insure Environment variables or python path is set correctly.
 ----------------------------------------------------------------------------------------
 
 Lexical definitions for making tokens
@@ -41,3 +50,30 @@ Integers:
 Comments:
     - Start with # and end with #.  ex:  # this is a comment #
     - Can cross multiple lines.
+
+---------------------------------------------------------------------------------------------
+Language Grammar
+
+<program> -> <vars> program <block>
+<block> -> begin <vars> <stats> end
+<vars> -> empty | whole Identifier := Integer ; <vars>
+<expr> -> <N> <expr_prime>
+<expr_prime>-> -<expr> | EMPTY
+<N>-> <A><N’>
+<N’>-> +<N> | *<N> | EMPTY
+<A>-> <M><A’>
+<A’>-> /<A> | EMPTY
+<M> -> : <M> | <R>
+<R> -> ( <expr> ) | IDENT_tk | NUM_tk
+<stats> -> <stat> <mStat>
+<mStat> -> empty | <stat> <mStat>
+<stat> -> <in_nt>; | <out_nt>; | <block> | <if_nt>; | <warp_nt>; | <assign_nt>; | <loop_nt>; | <label_nt>;
+<in_nt> -> input IDENT_tk
+<out_nt> -> output <expr>
+<if_nt> -> if [ <expr> <RO> <expr> ] then <stat><if_nt_prime>
+<if_nt_prime>-> pick <stat> | EMPTY
+<loop_nt> -> while [ <expr> <RO> <expr> ] <stat>
+<assign_nt> -> assign IDENT_tk = <expr>
+<RO> -> > | < | == | [ = ] (three tokens) | !=
+<label_nt> -> label IDENT_tk
+<warp_nt> -> warp IDENT_tk
