@@ -2,4 +2,8 @@
 whole cat := 5;
 program
 begin
+while [ 5 < hat ]
+    begin
+    warp hat;
+    end;
 end
