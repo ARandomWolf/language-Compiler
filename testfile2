@@ -4,6 +4,7 @@ program
 begin
     whole ZZ := 9 ;
     whole yx := 5 ;
+    # p2g4 #
     while [ yx - 5 < 10 ]
     begin
         assign yx = yx + 1 ;

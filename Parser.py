@@ -1,7 +1,6 @@
 # Python 2.7.5
 # Wyatt Wolf
 
-# comment before each method specifies the production rule it checks
 
 from NodeClass import Node
 
@@ -13,6 +12,8 @@ class Parser:
         self.lookahead = 0
         self.root = None
 
+    # prints info on token that caused error
+    # (actually just token at current look-a-head)
     def print_error(self):
         print('Error on Line: ' + str(self.token_list[self.lookahead - 0].line_num) + ' char: ' +
               str(self.token_list[self.lookahead - 0].character_num))
@@ -21,10 +22,12 @@ class Parser:
     def parse_token_list(self):
         self.root = self.program()
 
+    #
     def print_preorder(self):
         self.root.preorder(self.root, 0)
 
-    def check_semicolin(self):
+    # standalone semicolon check
+    def check_semicolon(self):
         if self.token_list[self.lookahead].tokenID == 'SMICLN_tk':
             self.lookahead += 1
             return
@@ -33,6 +36,11 @@ class Parser:
             print(self.token_list[self.lookahead])
             self.print_error()
             exit(1)
+
+    # *************************************************************************
+    # Below is where BNF of language is implemented
+    # Comment before each method specifies the production rule it checks
+    # *************************************************************************
 
     # <program> -> <vars> program <block>
     def program(self):
@@ -249,27 +257,27 @@ class Parser:
         ll_id = self.token_list[self.lookahead].tokenID
         if ll_id == 'input_tk':  # <in>
             temp.add_child(self.in_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         elif ll_id == 'output_tk':  # <out>
             temp.add_child(self.out_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         elif ll_id == 'begin_tk':  # <block>
             temp.add_child(self.block())
         elif ll_id == 'if_tk':  # <if>
             temp.add_child(self.if_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         elif ll_id == 'while_tk':  # <loop>
             temp.add_child(self.loop_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         elif ll_id == 'assign_tk':  # <assign>
             temp.add_child(self.assign_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         elif ll_id == 'warp_tk':  # <goto>
             temp.add_child(self.warp_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         elif ll_id == 'label_tk':  # <label>
             temp.add_child(self.label_nt())
-            self.check_semicolin()
+            self.check_semicolon()
         else:
             print('Error! Statement expected.')
             print('Possibly missing \'begin\' keyword for start of statement block')
@@ -278,7 +286,7 @@ class Parser:
 
         return temp
 
-    # <in_nt>
+    # <in_nt> -> input IDENT_tk
     def in_nt(self):
         temp = Node('in_nt')
 
@@ -362,7 +370,7 @@ class Parser:
             if self.token_list[self.lookahead].tokenID == 'LBRACK_tk':
                 self.lookahead += 1  # [
                 temp.add_child(self.expr())  # <expr>
-                temp.add_child(self.ro())    # <RO>
+                temp.add_child(self.ro())  # <RO>
                 temp.add_child(self.expr())  # <expr>
 
                 if self.token_list[self.lookahead].tokenID == 'RBRACK_tk':

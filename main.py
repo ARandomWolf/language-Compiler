@@ -19,10 +19,13 @@ if __name__ == '__main__':
     token_list = scan_for_tokens(input_text)
 
     # display
-    print_token_list(token_list)
+    # print_token_list(token_list)
 
+    # initialize parser object
     parser = Parser(token_list)
 
+    # parse token list into n-ary tree
     parser.parse_token_list()
 
+    # print tree
     parser.print_preorder()
