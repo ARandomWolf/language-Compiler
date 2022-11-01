@@ -61,7 +61,7 @@ class Parser:
                 print('Token found outside main program block.')
                 exit(1)
         else:
-            self.print_error(self.lookahead)
+            self.print_error()
             print('Invalid declaration statement or missing \'Program\' keyword after variable declaration(s)')
             exit(1)
 
