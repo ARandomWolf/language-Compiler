@@ -1,6 +1,5 @@
 # python 2.7.5
 # Wyatt Wolf
-# CS4280
 
 
 if __name__ == '__main__':
@@ -8,6 +7,7 @@ if __name__ == '__main__':
     from Input import get_args_input
     from Scanner import *
     from Parser import *
+    from LocalScope import *
 
     # get input into list of lines
     input_text = get_args_input()
@@ -29,3 +29,6 @@ if __name__ == '__main__':
 
     # print tree
     parser.print_preorder()
+
+    scope_check = Local_scope(parser.parse_tree)
+    scope_check.check_scope()

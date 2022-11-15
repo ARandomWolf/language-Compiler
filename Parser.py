@@ -10,7 +10,7 @@ class Parser:
     def __init__(self, t_list):
         self.token_list = t_list
         self.lookahead = 0
-        self.root = None
+        self.parse_tree = None
 
     # prints info on token that caused error
     # (actually just token at current look-a-head)
@@ -20,11 +20,17 @@ class Parser:
 
     # call to parse stored token list
     def parse_token_list(self):
-        self.root = self.program()
+        self.lookahead = 0
+        self.parse_tree = None
+        self.parse_tree = self.program()
 
-    #
+    # wrapper for preorder traversal defined in NodeClass.py
     def print_preorder(self):
-        self.root.preorder(self.root, 0)
+        self.parse_tree.preorder(self.parse_tree, 0)
+
+    # wrapper for stack print defined in NodeClass.py
+    def printstack(self):
+        self.parse_tree.print_stack()
 
     # standalone semicolon check
     def check_semicolon(self):

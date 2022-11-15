@@ -1,6 +1,6 @@
 # Python 2.7.5
 # Wyatt Wolf
-# CS4280
+
 import sys
 
 

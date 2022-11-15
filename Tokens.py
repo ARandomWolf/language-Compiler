@@ -1,10 +1,12 @@
 # python 2.7.5
 # Wyatt Wolf
-# CS4280
+
 
 # data structure (type) for Token
 from collections import namedtuple
 Token = namedtuple('Token', ['tokenID', 'tk_string', 'line_num', 'character_num'])
+
+
 
 # Base token types (keywords and single operators are given unique token names after scanning)
 #                  0            1       2        3         4          5            6        7           8

@@ -5,6 +5,6 @@ program
 begin
 #wyatt wolf#
    whole yx := 5 ;
-   assign yx = yx * 5 - 3 + 8 / : 11 ;
+   assign y = (yx * 5 - 3 + 8) * 20 / : 11 ;
    output yx ;
 end
