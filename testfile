@@ -1,19 +1,20 @@
 # p2g4, the same variable defined in different blocks #
+whole aaa := 5 ;
 program
 begin
    whole ab := 5 ;
    while [ ab < 10 ]
    begin
+      whole xx := 99;
       whole yx := 5 ;
-      whole xx := 5 ;
-      assign xx = yx + 1 ;
       assign ab = yx + 1 ;
    end ;
 
    while [ ab < 10 ]
    begin
       whole yx := 7 ;
-      assign yx = xx + 1 ;
+            whole xx := 99;
+      assign yx = yx + aaa ;
    end ;
 
    output ab ;

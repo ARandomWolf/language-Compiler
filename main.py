@@ -27,8 +27,6 @@ if __name__ == '__main__':
     # parse token list into n-ary tree
     parser.parse_token_list()
 
-    # print tree
-    parser.print_preorder()
-
+    # check local scope
     scope_check = Local_scope(parser.parse_tree)
     scope_check.check_scope()

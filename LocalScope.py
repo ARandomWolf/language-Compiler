@@ -12,8 +12,8 @@ class Local_scope:
         self.varCount = 0
 
     def check_scope(self):
-        self.get_global_vars()
-        self.preorder(self.tree_root.children[1])
+        self.preorder(self.tree_root)
+        print('\nVariable declarations and scope validated!')
         return
 
     def preorder(self, root):
@@ -27,12 +27,12 @@ class Local_scope:
             # if child is a vars node, add declared vars to stack
             if child is not None and child.name == 'vars':
                 count = self.get_vars(child)
-                print(str(count))
+
             else:
                 if child is not None:
                     for tk in child.data:
                         if tk.tokenID == 'IDENT_tk':
-                            print('Valid ID Token FOUND: ' + tk.tk_string)
+                            #print('Valid ID Token FOUND: ' + tk.tk_string)
                             # make sure variable is declared before use
                             if not self.stack.__contains__(tk.tk_string):
                                 print ('Error!\nVariable not declared! line ' + str(tk.line_num) +' character ' + str(tk.character_num))
@@ -65,24 +65,5 @@ class Local_scope:
 
         return var_count
 
-    def get_global_vars(self):
 
-        for child in self.tree_root.children:
-            if child is not None and child.name == 'vars':
-                self.stack.append(child.data[0].tk_string)
-
-                while len(child.children) > 0:
-                    child = child.children[0]
-                    if child is None:
-                        break
-                    if self.stack.__contains__(child.data[0].tk_string):
-                        print ('Error!\nVariable redeclaration on line ' + str(child.data[0].line_num))
-                        exit(1)
-                    else:
-                        self.varCount+=1
-                        self.stack.append(child.data[0].tk_string)
-
-        print ('global vars:' + str(self.stack))
-
-        return
 
