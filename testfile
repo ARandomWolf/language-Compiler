@@ -2,20 +2,8 @@
 whole aaa := 5 ;
 program
 begin
-   whole ab := 5 ;
-   while [ ab < 10 ]
-   begin
-      whole xx := 99;
-      whole yx := 5 ;
-      assign ab = yx + 1 ;
-   end ;
-
-   while [ ab < 10 ]
-   begin
-      whole yx := 7 ;
-            whole xx := 99;
-      assign yx = yx + aaa ;
-   end ;
-
-   output ab ;
+   whole ab := 99;
+   input aaa;
+   input ab;
+   output (ab) ;
 end

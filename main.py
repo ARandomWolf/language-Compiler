@@ -4,16 +4,17 @@
 
 if __name__ == '__main__':
 
-    from Input import get_args_input
+    from Input import SourceInput
     from Scanner import *
     from Parser import *
-    from LocalScope import *
+    from CodeTranslator import *
 
     # get input into list of lines
-    input_text = get_args_input()
+
+    source_input = SourceInput()
 
     # remove comments (replaces with white space to preserve file structure)
-    input_text = remove_comments(input_text)
+    input_text = remove_comments(source_input.input_as_list)
 
     # scan lines for tokens
     token_list = scan_for_tokens(input_text)
@@ -27,6 +28,9 @@ if __name__ == '__main__':
     # parse token list into n-ary tree
     parser.parse_token_list()
 
+    parser.print_preorder()
+
     # check local scope
-    scope_check = Local_scope(parser.parse_tree)
-    scope_check.check_scope()
+    translator = Translator(parser.parse_tree, source_input.in_file_name)
+    translator.translate_to_asm()
+

@@ -4,7 +4,7 @@
 import sys
 
 
-# get command line arguments, or get input from user if no arguments are specified.
+# get command line arguments, or input from user if no arguments are specified.
 def get_args_input():
     print("cmd line args: ", sys.argv)
 
@@ -37,10 +37,14 @@ def get_args_input():
     return lines
 
 
-def clear_output_files():
-    f = open('output.inorder', 'w')
-    f.close()
-    f = open('output.postorder', 'w')
-    f.close()
-    f = open('output.preorder', 'w')
-    f.close()
+class SourceInput:
+
+    def __init__(self):
+        self.input_as_list = get_args_input()
+
+        self.in_file_name = 'kb'
+        if len(sys.argv) == 2:
+            self.in_file_name = sys.argv[1]
+
+
+

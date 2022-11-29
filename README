@@ -56,7 +56,7 @@ Language Grammar
 
 <program> -> <vars> program <block>
 <block> -> begin <vars> <stats> end
-<vars> -> empty | whole Identifier := Integer ; <vars>
+<vars> -> empty | whole Identifier := NUM_tk ; <vars>
 <expr> -> <N> <expr_prime>
 <expr_prime>-> -<expr> | EMPTY
 <N>-> <A><N’>
