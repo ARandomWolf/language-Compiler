@@ -23,7 +23,7 @@ class Translator:
         self.traverse_parse_tree(self.tree_root)
         self.file.write('STOP\n')
         for i in range(self.temp_var_number):
-            self.file.write('TTT' + str(i) + ' = 0\n')
+            self.file.write('TTT' + str(i) + ' 0\n')
         print('\nVariable declarations and scope validated!')
         self.file.close()
         return
@@ -64,14 +64,16 @@ class Translator:
                         self.file.write('STACKW ' +
                                         str(self.get_asm_tmp(child.data[0].tk_string)) +
                                         '\n')
+                        self.traverse_parse_tree(child)
+                    elif child.name == 'out_nt':
                         continue
                     elif child.name == 'r':
                         # load var or int into accumulator
                         continue
-                    # TODO add code generation here
-
-                # recursive call to get next child
-                self.traverse_parse_tree(child)
+                    else:
+                        # TODO add code generation here
+                        # recursive call to get next child
+                        self.traverse_parse_tree(child)
 
         for i in range(count):
             self.stack.pop()
