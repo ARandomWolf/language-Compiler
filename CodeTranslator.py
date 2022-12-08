@@ -83,6 +83,31 @@ class Translator:
                     elif child.name == 'expr':
                         self.traverse_parse_tree(child)
 
+                    elif child.name == 'expr_prime':
+                        if child.data:
+                            tmp_var_name = self.get_tmp()
+                            self.file.write('STORE ' + tmp_var_name + '\n')
+                            self.traverse_parse_tree(child)
+                            tmp_var_name2 = self.get_tmp()
+                            self.file.write('STORE ' + tmp_var_name2 + '\n')
+                            self.file.write('LOAD ' + tmp_var_name + '\n')
+                            self.file.write('SUB ' + tmp_var_name2 + '\n')
+
+                        else:
+                            self.traverse_parse_tree(child)
+
+                    elif child.name == 'a_prime':
+                        if child.data:
+                            tmp_var_name = self.get_tmp()
+                            self.file.write('STORE ' + tmp_var_name + '\n')
+                            self.traverse_parse_tree(child)
+                            tmp_var_name2 = self.get_tmp()
+                            self.file.write('STORE ' + tmp_var_name2 + '\n')
+                            self.file.write('LOAD ' + tmp_var_name + '\n')
+                            self.file.write('DIV ' + tmp_var_name2 + '\n')
+
+                        else:
+                            self.traverse_parse_tree(child)
                     elif child.name == 'n_prime':
                         # value in accumulator needs to be stored in TTT variable.
                         # call traverse to get next value into accumulator
@@ -96,6 +121,13 @@ class Translator:
                                 self.file.write('MULT ' + tmp_var_name + '\n')
                             elif child.data[0].tokenID == 'PLUS_tk':
                                 self.file.write('ADD ' + tmp_var_name + '\n')
+                        else:
+                            self.traverse_parse_tree(child)
+
+                    elif child.name == 'm':
+                        self.traverse_parse_tree(child)
+                        if child.data:
+                            self.file.write('MULT -1\n')
 
                     elif child.name == 'r_node':
                         # some r_node's are empty
@@ -119,6 +151,7 @@ class Translator:
                         self.traverse_parse_tree(child)
         # *****MAIN LOOP END*****
 
+        # POP items from stack as their operating scope finishes
         for i in range(count):
             self.stack.pop()
             self.file.write('POP\n')
