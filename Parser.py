@@ -212,7 +212,7 @@ class Parser:
 
     # <r> ->  (<expr>) | IDENT_tk | NUM_tk
     def r(self):
-        temp = Node('r')
+        temp = Node('r_node')
         if self.token_list[self.lookahead].tokenID == 'LPREN_tk':
             self.lookahead += 1
             temp.add_child(self.expr())

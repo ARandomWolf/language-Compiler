@@ -16,7 +16,7 @@ class Translator:
         self.asm_stack_var_index = 0
         self.temp_var_number = 0
 
-    def get_asm_tmp(self, var_name):
+    def get_asm_stack_location(self, var_name):
         return len(self.stack) - 1 - self.stack.index(var_name)
 
     def translate_to_asm(self):
@@ -29,11 +29,13 @@ class Translator:
         return
 
     def traverse_parse_tree(self, root):
-        count = 0
+        count = 0  # tracks number of variables declared in each block
+
         if root is None:
             return
 
         # iterate through children from left to right
+        # *****MAIN LOOP START*****
         for child in root.children:
 
             # if child is a vars node, add declared vars to stack
@@ -41,7 +43,7 @@ class Translator:
                 count = self.process_vars_node(child)
 
             else:  # non-vars nodes
-                # check for variable references
+                # check for variable references and see if they have been declared
                 if child is not None:
                     for tk in child.data:
                         if tk.tokenID == 'IDENT_tk':
@@ -53,27 +55,69 @@ class Translator:
                                 self.file.close()
                                 os.remove(self.out_file_name)
                                 exit(1)
+
                     # variable(s) declaration / scope-check finished
 
                     if child.name == 'assign_nt':
-                        continue
+                        self.traverse_parse_tree(child)
+                        self.file.write('STACKW ' +
+                                        str(self.get_asm_stack_location(child.data[0].tk_string)) +
+                                        '\n')
+
                     elif child.name == 'in_nt':
                         tmp_var_name = self.get_tmp()
                         self.file.write('READ ' + tmp_var_name + '\n')
                         self.file.write('LOAD ' + tmp_var_name + '\n')
                         self.file.write('STACKW ' +
-                                        str(self.get_asm_tmp(child.data[0].tk_string)) +
+                                        str(self.get_asm_stack_location(child.data[0].tk_string)) +
                                         '\n')
                         self.traverse_parse_tree(child)
+
                     elif child.name == 'out_nt':
-                        continue
-                    elif child.name == 'r':
+                        self.traverse_parse_tree(child)
+
+                        tmp_var_name = self.get_tmp()
+                        self.file.write('STORE ' + tmp_var_name + '\n')
+                        self.file.write('WRITE ' + tmp_var_name + '\n')
+
+                    elif child.name == 'expr':
+                        self.traverse_parse_tree(child)
+
+                    elif child.name == 'n_prime':
+                        # value in accumulator needs to be stored in TTT variable.
+                        # call traverse to get next value into accumulator
+                        # MULT TTT so accumulator is multiplied with val in the temp variable.
+                        if child.data:
+                            tmp_var_name = self.get_tmp()
+                            self.file.write('STORE ' + tmp_var_name + '\n')
+                            self.traverse_parse_tree(child)
+
+                            if child.data[0].tokenID == 'MULT_tk':
+                                self.file.write('MULT ' + tmp_var_name + '\n')
+                            elif child.data[0].tokenID == 'PLUS_tk':
+                                self.file.write('ADD ' + tmp_var_name + '\n')
+
+                    elif child.name == 'r_node':
+                        # some r_node's are empty
+                        if child.data :
+                            # load var from stack or directly load an int
+                            if child.data[0].tokenID == 'IDENT_tk':
+                                self.file.write('STACKR ' +
+                                                str(self.get_asm_stack_location(child.data[0].tk_string)) +
+                                                '\n')
+                                print('R node holds Identifier')
+                            elif child.data[0].tokenID == 'NUM_tk':
+                                self.file.write('LOAD ' + str(child.data[0].tk_string) + '\n')
+                                print('R node holds Integer')
+
+                        self.traverse_parse_tree(child)
                         # load var or int into accumulator
-                        continue
+
                     else:
-                        # TODO add code generation here
+                        # TODO add more code generation here
                         # recursive call to get next child
                         self.traverse_parse_tree(child)
+        # *****MAIN LOOP END*****
 
         for i in range(count):
             self.stack.pop()
