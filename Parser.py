@@ -138,7 +138,7 @@ class Parser:
                 self.print_error()
                 print('Identifier expected after whole keyword.')
                 exit(1)
-        else:
+        else:  # EMPTY
             return
 
     # <expr> -> <N> <expr_prime>
@@ -287,7 +287,7 @@ class Parser:
             temp.add_child(self.label_nt())
             self.check_semicolon()
         else:
-            print('Error! Statement expected.')
+            print('Error! Statement expected. Possibly Block with no statement(s)')
             print('Possibly missing \'begin\' keyword for start of statement block')
             self.print_error()
             exit(1)

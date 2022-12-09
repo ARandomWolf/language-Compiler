@@ -275,6 +275,7 @@ class Translator:
             # add variable to internal tracking stack
             # data[0] holds variable token in vars node
             self.stack.append(vars_node.data[0].tk_string)
+
             # increment internal tracking counter
             var_count += 1
 
