@@ -28,7 +28,7 @@ if __name__ == '__main__':
     # parse token list into n-ary tree
     parser.parse_token_list()
 
-    parser.print_preorder()
+    #parser.print_preorder()
 
     # check local scope
     translator = Translator(parser.parse_tree, source_input.in_file_name)
