@@ -24,6 +24,8 @@ Project Stages:
     user declared variables that are used as a label. The value of the last type respectively is tracked on the stack,
     but initialized globally to zero for uses as a Label.
 
+    Target language and interpreter can be found at https://comp.umsl.edu/assembler/index
+
 ----------------------------------------------------------------------------------------
 How to run program
 
