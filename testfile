@@ -1,9 +1,7 @@
-# p2g4, the same variable defined in different blocks #
-whole aaa := 5 ;
+# p4g5, testing relational operators and pick #
 program
 begin
-   whole ab := 99;
-   input aaa;
-   input ab;
-   output (ab) ;
+   whole ab := 5 ;
+   whole cd := 7 ;
+   output 5 - :4;
 end

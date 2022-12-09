@@ -1,34 +1,46 @@
+** Storage = Local **
+
 Author: Wyatt Wolf
 Github: https://github.com/ARandomWolf/language-Compiler.git
 Project written in python version 2.7.5
 
-Parts:
-1) scanner (FSA table)
-The scanner portion of this project takes in file or console input,
-then outputs a list of tokens one at a time, giving details on each one.
+Project Stages:
+1) scanner (FSA table) <complete>
+    The scanner portion of this project takes in file or console input,
+    then outputs a list of tokens one at a time, giving details on each one.
 
-2) parser
-The parser takes in tokens one at a time and insures they match the language grammar.
-If the token is a subset of the grammar it is added to the parse tree.
-All errors should stop the parsing process and report an error.
+2) parser <complete>
+    The parser takes in tokens one at a time and insures they match the language grammar.
+    If the token is a subset of the grammar it is added to the parse tree.
+    All errors should stop the parsing process and report an error.
+
+3) Variable scope validation <complete>
+    This stage insures all variables have been properly declared and
+    are in the scope of the program when used.
+
+4) Code Generation <complete>
+    Variables declared in the source language are stored on the stack in target language (.asm assembly).
+    All global variables in target language are for temporary variables/labels or
+    user declared variables that are used as a label. The value of the last type respectively is tracked on the stack,
+    but initialized globally to zero for uses as a Label.
 
 ----------------------------------------------------------------------------------------
 How to run program
 
 option 1 (input entered by user):
-        python main.py
+        python compfs.py
 
         Note: CTRL-D or CTRL-Z (EOF) must be entered on new line.
         All text present on the same line as the EOF token will be lost and cause errors.
 
-option 2 (using file input): python main.py filename
+option 2 (using file input): python compfs.py filename
 
-option 3 (redirect): python main.py < filename
+option 3 (redirect): python compfs.py < filename
 
 errors: insure python 2.7.5 or compatible version is installed.
         Insure Environment variables or python path is set correctly.
-----------------------------------------------------------------------------------------
 
+----------------------------------------------------------------------------------------
 Lexical definitions for making tokens
 Alphabet:
     - All English letters (upper and lower), digits, plus the extra characters as seen below, plus WS.
@@ -50,6 +62,23 @@ Integers:
 Comments:
     - Start with # and end with #.  ex:  # this is a comment #
     - Can cross multiple lines.
+
+---------------------------------------------------------------------------------------------
+Runtime Semantics
+
+
+    Relational operators '>' '<' '==' '!='  all mean the same as C.
+    Relational operator '[=]' returns true if the signs of the arguments are the same (with a 0 counting as positive).
+    '+' '-' '*' are standard arithmetical, '/' is integer division, unary ':' is negation.
+    Assignment evaluates the expression on the right and assigns to the ID on the left.
+    while is like the while loop in C.
+    If statement is like in C.
+    IO reads/prints a 2-byte signed integer.
+    All data is 2-byte signed integer.
+    Input reads in an integer from input and stores it in the identifier.
+    Output outputs the given calculated expression.
+    Label statement places a label that can be jumped to directly using "warp".
+    Labels must be unique.
 
 ---------------------------------------------------------------------------------------------
 Language Grammar

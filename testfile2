@@ -1,10 +1,13 @@
-# p2g3 #
-whole cat := 99;
-whole frog := 23;
+# p4g6, testing while loop #
 program
 begin
-#wyatt wolf#
-   whole yx := 5 ;
-   assign yx = (yx * 5 - 3 + 8) * frog / : 11 ;
-   output yx ;
+   whole ab := 5 ;
+   whole cd := 7 ;
+   while [ ab [=] cd ]
+   begin
+      output ab ;
+      assign ab = ab - 1 ;
+   end ;
+   label cd;
+
 end

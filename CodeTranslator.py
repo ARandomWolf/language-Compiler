@@ -200,8 +200,14 @@ class Translator:
                         self.file.write(tmp_var_label3 + ': NOOP\n')  # LABEL FOR JUMP TO END
 
                     elif child.name == 'label_nt':
-                        self.file.write(child.data[0].tk_string + ': NOOP\n')  # LABEL FOR JUMP
-                        self.user_var_label_tracker.append(child.data[0].tk_string)
+                        if self.user_var_label_tracker.__contains__(child.data[0].tk_string):
+                            self.file.close()
+                            os.remove(self.out_file_name)
+                            print('ERROR! Label used more then once. Line ' + str(child.data[0].line_num))
+                            exit(1)
+                        else:
+                            self.file.write(child.data[0].tk_string + ': NOOP\n')  # LABEL FOR JUMP
+                            self.user_var_label_tracker.append(child.data[0].tk_string)
 
                     elif child.name == 'warp_nt':
                         self.file.write('BR ' + child.data[0].tk_string + '\n')  # JUMP TO LABEL
