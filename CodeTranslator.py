@@ -15,6 +15,8 @@ class Translator:
         self.file = open(self.out_file_name, 'w')
         self.asm_stack_var_index = 0
         self.temp_var_number = 0
+        self.temp_var_label_tracker = []
+        self.user_var_label_tracker = []
 
     def get_asm_stack_location(self, var_name):
         return len(self.stack) - 1 - self.stack.index(var_name)
@@ -23,7 +25,14 @@ class Translator:
         self.traverse_parse_tree(self.tree_root)
         self.file.write('STOP\n')
         for i in range(self.temp_var_number):
-            self.file.write('TTT' + str(i) + ' 0\n')
+            if self.temp_var_label_tracker[i] is False:
+                self.file.write('TTT' + str(i) + ' 0\n')
+            else:
+                self.file.write('LLL' + str(i) + ' 0\n')
+
+        for i in range(len(self.user_var_label_tracker)):
+            self.file.write(self.user_var_label_tracker[i] + ' 0\n')
+
         print('\nVariable declarations and scope validated!')
         self.file.close()
         return
@@ -108,6 +117,7 @@ class Translator:
 
                         else:
                             self.traverse_parse_tree(child)
+
                     elif child.name == 'n_prime':
                         # value in accumulator needs to be stored in TTT variable.
                         # call traverse to get next value into accumulator
@@ -144,6 +154,56 @@ class Translator:
 
                         self.traverse_parse_tree(child)
                         # load var or int into accumulator
+                    elif child.name == 'if_nt':  # if  [<expr> <RO> <expr>] then <stmt>
+                        print(len(root.children))
+                        self.traverse_parse_tree(child.children[2])  # load 2nd <expr> into accumulator
+                        tmp_var_expr2 = self.get_tmp()
+                        self.file.write('STORE ' + tmp_var_expr2 + '\n')  # store result into temp variable
+
+                        self.traverse_parse_tree(child.children[0])  # load first <expr> into accumulator
+
+                        tmp_var_labe1 = self.get_tmp(True) # Generate Label variables
+                        tmp_var_labe2 = self.get_tmp(True)
+                        tmp_var_labe3 = self.get_tmp(True)
+
+                        # get the equality operator
+                        if child.children[1].data and len(child.children[1].data) > 1:  # operator is [=]
+                            self.file.write('MULT ' + tmp_var_expr2 + '\n')  # <expr1> - <expr2>
+                            self.file.write('BRZPOS ' + tmp_var_labe1 + '\n')  # jump to ll1 if true
+
+                        else:
+                            self.file.write('SUB ' + tmp_var_expr2 + '\n')  # <expr1> - <expr2>
+
+                            if child.children[1].data[0].tokenID == 'EQEQ_tk':
+                                self.file.write('BRZERO ' + tmp_var_labe1 + '\n')  # jump to ll1 if true
+                            elif child.children[1].data[0].tokenID == 'LESS_tk':
+                                self.file.write('BRNEG ' + tmp_var_labe1 + '\n')  # jump to ll1 if true
+                            elif child.children[1].data[0].tokenID == 'GREAT_tk':
+                                self.file.write('BRPOS ' + tmp_var_labe1 + '\n')  # jump to ll1 if true
+                            elif child.children[1].data[0].tokenID == 'NOTEQ_tk':
+                                self.file.write('BRPOS ' + tmp_var_labe1 + '\n')  # jump to ll1 if true
+                                self.file.write('BRNEG ' + tmp_var_labe1 + '\n')  # jump to ll1 if true
+
+                        self.file.write('BR ' + tmp_var_labe2 + '\n')  # jump to ll2 if true
+
+                        self.file.write( tmp_var_labe1 + ': NOOP\n')  # LABEL FOR -> DO IF TRUE
+
+                        self.traverse_parse_tree(child.children[3])
+                        self.file.write('BR '+tmp_var_labe3 + '\n')
+
+                        self.file.write( tmp_var_labe2 + ': NOOP\n')  # LABEL FOR -> DO IF FALSE
+
+                        if len(child.children) > 4 :
+                            self.traverse_parse_tree(child.children[4])
+
+                        self.file.write(tmp_var_labe3 + ': NOOP\n')  # LABEL FOR JUMP TO END
+
+                    elif child.name == 'label_nt':
+                        self.file.write(child.data[0].tk_string + ': NOOP\n')  # LABEL FOR JUMP
+                        self.user_var_label_tracker.append(child.data[0].tk_string)
+
+                    elif child.name == 'warp_nt':
+                        self.file.write('BR ' + child.data[0].tk_string + '\n')  # LABEL FOR JUMP
 
                     else:
                         # TODO add more code generation here
@@ -205,9 +265,17 @@ class Translator:
 
         return var_count
 
-    def get_tmp(self):
-        tmp_var_name = 'TTT' + str(self.temp_var_number)
-        self.temp_var_number += 1
+    def get_tmp(self, label_type=False):
+
+        if label_type is False:
+            tmp_var_name = 'TTT' + str(self.temp_var_number)
+            self.temp_var_label_tracker.append(False)
+            self.temp_var_number += 1
+        else:
+            tmp_var_name = 'LLL' + str(self.temp_var_number)
+            self.temp_var_label_tracker.append(True)
+            self.temp_var_number += 1
+
         return tmp_var_name
 
     def push_var(self, int_initial_value):

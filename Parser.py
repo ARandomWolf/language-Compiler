@@ -87,6 +87,8 @@ class Parser:
             else:
                 self.print_error()
                 print('Block statement expected to end with keyword: end')
+                print('Check preceding \'end\' keyword for extra \';\' token.')
+                print('Check for invalid statement before variable declaration(s).')
                 exit(1)
         else:
             self.print_error()

@@ -13,13 +13,13 @@
 
 <stats> -> <stat> <mStat>
 <mStat> -> empty | <stat> <mStat>
-<stat> -> <in> ; | <out> ; | <block> | <if> ; | <loop> ; | <assign> ; | <goto> ; | <label> ;
+<stat> -> <in> ; | <out> ; | <block> | <if> ; | <loop> ; | <assign> ; | <warp_nt> ; | <label_nt> ;
 <in> -> input Identifier
 <out> -> output <expr>
-<if> -> if [ <expr> <RO> <expr> ] then <stat><ifprime>
+<if> -> if [ <expr> <RO> <expr> ] then <stat><if_prime>
 <if_prime>-> pick <stat> | EMPTY
 <loop> -> while [ <expr> <RO> <expr> ] <stat>
 <assign> -> assign Identifier = <expr>
 <RO> -> > | < | == | [ = ] (three tokens) | !=
-<label> -> label Identifier
-<goto> -> warp Identifier
+<label_nt> -> label Identifier
+<warp_nt> -> warp Identifier
